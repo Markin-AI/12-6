@@ -56,8 +56,44 @@ services:
       - mysql-master
 ```
 
+my.cnf Master
+```
+[mysqld]
+server-id=1
+binlog_format=ROW
+log-bin
+```
+
+my.cnf Slave
+```
+[mysqld]
+server-id=2
+read_only = 1
+```
+
+start.sql Master
+
+```sql
+CREATE USER repl@'%' IDENTIFIED WITH mysql_native_password BY 'slavepass';
+GRANT REPLICATION SLAVE ON *.* TO repl@'%';
+```
+
+start.sql Slave
+```sql
+CHANGE MASTER TO 
+MASTER_HOST='mysql-master',
+MASTER_USER='repl',
+MASTER_PASSWORD='slavepass';
+```
+
 
 ![Задание 2](https://github.com/Markin-AI/12-6/blob/main/img/2-1.png)
+
+![Задание 2](https://github.com/Markin-AI/12-6/blob/main/img/2-2.png)
+
+![Задание 2](https://github.com/Markin-AI/12-6/blob/main/img/2-3.png)
+
+![Задание 2](https://github.com/Markin-AI/12-6/blob/main/img/2-4.png)
 
 
 ---
